@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="appModule">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Angular JS</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='../node_modules/angular/angular.min.js'></script>
+    <script>
+        angular.module('appModule', []);
+
+        angular.module('appModule').service('service', function () {
+
+
+            this.upper = function (input) {
+                console.log('ENtrando na service:' + input)
+                // return input.upperCase();
+            }
+        })
+
+        angular.module('appModule').filter('upperCase', function () {
+
+            return function upperCasePipe(input) {
+                if (input !== undefined) {
+
+                    return input.toUpperCase();
+                }
+                return;
+            }
+        });
+
+        angular.module('appModule').controller('IndexController', ['service', controller]);
+
+        function controller(init) {
+
+            var vm = this;
+
+            alert('Ola1')
+
+            function init() {
+                alert('Ola2')
+
+                _autoIncrement();
+            }
+
+            function _autoIncrement() {
+                vm.increment = function () {
+
+                  return vm.value++;
+                }
+            }
+
+
+
+        }   
+    </script>
+</head>
+
+<body>
+
+    <div ng-controller="IndexController as ctrl">
+        <button ng-click="ctrl.increment()">
+
+            <div>
+                {{ ctrl.value }}
+            </div>
+        </button>
+
+        <div>
+            <p>{{ ctrl.value | upperCase }}</p>
+            <input ng-model="ctrl.value">
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>
