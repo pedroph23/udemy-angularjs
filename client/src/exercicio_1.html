@@ -15,10 +15,17 @@
 
 
             this.upper = function (input) {
-                console.log('ENtrando na service:' + input)
-                // return input.upperCase();
+
+                return input.toUpperCase();
             }
         })
+
+        angular.module('appModule').factory('factory', function () {
+           
+            function teste(params) {
+               return  alert('Oi');
+            }
+        });
 
         angular.module('appModule').filter('upperCase', function () {
 
@@ -31,25 +38,37 @@
             }
         });
 
-        angular.module('appModule').controller('IndexController', ['service', controller]);
+        angular.module('appModule').controller('IndexController', ['service', 'factory', controller]);
 
-        function controller(init) {
+        function controller(service, factory) {
 
             var vm = this;
 
-            alert('Ola1')
+            this.value_1 = 0;
+            
+            /*Inicializador */
+            init();
 
             function init() {
-                alert('Ola2')
 
                 _autoIncrement();
+                _teste();
+            }
+
+            this.upperCase = function (value) {
+
+                this.value_3 = service.upper(value);
             }
 
             function _autoIncrement() {
                 vm.increment = function () {
 
-                  return vm.value++;
+                    return vm.value_1++;
                 }
+            }
+
+            function _teste() {
+                factory.teste();
             }
 
 
@@ -60,17 +79,25 @@
 
 <body>
 
+    <h1>Exercício 1</h1>
     <div ng-controller="IndexController as ctrl">
         <button ng-click="ctrl.increment()">
 
             <div>
-                {{ ctrl.value }}
+                {{ ctrl.value_1 }}
             </div>
         </button>
 
+        <h1>Exercício 2</h1>
+
         <div>
-            <p>{{ ctrl.value | upperCase }}</p>
-            <input ng-model="ctrl.value">
+            <p>{{ ctrl.value_2 | upperCase }}</p>
+            <input ng-model="ctrl.value_2">
+        </div>
+
+        <h1>Exercício 3</h1>
+        <div>
+            <input ng-change="ctrl.upperCase(ctrl.value_3)" ng-model="ctrl.value_3">
         </div>
     </div>
 
