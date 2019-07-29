@@ -20,16 +20,29 @@
             }
         })
 
+        //Factory retorna objetos !
         angular.module('appModule').factory('factory', function () {
-           
-            function teste(params) {
-               return  alert('Oi');
+
+            function upperCaseWithFactory(input) {
+
+                return input.toUpperCase();
             }
+
+            return { upperCaseWithFactory };
+        });
+
+        angular.module('appModule').directive('clock', function() {
+            return { 
+                template : "<strong>"+
+                                new Date()
+                           +"</strong>" 
+            };
         });
 
         angular.module('appModule').filter('upperCase', function () {
 
             return function upperCasePipe(input) {
+
                 if (input !== undefined) {
 
                     return input.toUpperCase();
@@ -38,21 +51,20 @@
             }
         });
 
-        angular.module('appModule').controller('IndexController', ['service', 'factory', controller]);
+        angular.module('appModule').controller('IndexController', ['service','factory', controller]);
 
         function controller(service, factory) {
 
             var vm = this;
 
             this.value_1 = 0;
-            
+
             /*Inicializador */
             init();
 
             function init() {
 
                 _autoIncrement();
-                _teste();
             }
 
             this.upperCase = function (value) {
@@ -60,20 +72,29 @@
                 this.value_3 = service.upper(value);
             }
 
-            function _autoIncrement() {
+            function _autoIncrement()    {
+
                 vm.increment = function () {
 
                     return vm.value_1++;
                 }
             }
 
-            function _teste() {
-                factory.teste();
+            this.upperCaseWithFactory = function (value) {
+               
+                vm.value_4 = factory.upperCaseWithFactory(vm.value_4);
             }
-
-
-
         }   
+
+        angular.module("appModule").component('indexComponent',{
+    
+            template: '<h1>Exercício 6 </h1>' +
+                       '<p> Criando um component </p>',
+            controller: function controllerComponent(params) {
+                console.log('Oi')
+            }
+        });
+
     </script>
 </head>
 
@@ -96,9 +117,22 @@
         </div>
 
         <h1>Exercício 3</h1>
+
         <div>
             <input ng-change="ctrl.upperCase(ctrl.value_3)" ng-model="ctrl.value_3">
         </div>
+
+        <h1>Exercício 4</h1>
+            
+        <div>
+            <input ng-change="ctrl.upperCaseWithFactory(ctrl.value_4)" ng-model="ctrl.value_4">
+        </div>
+
+        <h1>Exercício 5</h1>
+            
+        <div clock></div>
+
+        <index-component></index-component>
     </div>
 
 
